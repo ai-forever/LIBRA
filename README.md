@@ -1,6 +1,6 @@
 # LIBRA: Long Input Benchmark for Russian Analysis
 
-![logo](https://i.imgur.com/uZYPoc9.jpeg)
+![logo](https://i.imgur.com/PPzerDU.jpeg)
  
 ## Introduction
 
