@@ -1,10 +1,10 @@
-import json
+from datasets import load_dataset
 
 
-class DatasetLoader():
-    def __init__(self, dataset_name, dataset_path=None):
-        self.dataset_path = dataset_path
+class DatasetLoader:
+    def __init__(self, dataset_name):
+        self.dataset_name = dataset_name
     
     def dataset_load(self):
-        dataset = json.load(open(self.dataset_path, encoding="utf-8"))
+        dataset = load_dataset("ai-forever/LIBRA", self.dataset_name)["test"]
         return dataset

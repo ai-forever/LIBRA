@@ -1,6 +1,9 @@
 # LIBRA: Long Input Benchmark for Russian Analysis
-
-![logo](https://i.imgur.com/PPzerDU.jpeg)
+<p align="center">
+  <picture>
+    <img alt="LIBRA" src="docs/LIBRA_logo.png" style="max-width: 100%;">
+  </picture>
+</p>
  
 ## Introduction
 
@@ -13,7 +16,7 @@ Welcome to the official GitHub repository for **LIBRA (Long Input Benchmark for 
 In order to add your own dataset, follow these steps:
 
   1. Add your dataset to the configs/datasets_config.json file.
-  2. Create a config file for it (e.g., longchat32k.ini) and specify the necessary parameters in it.
+  2. Create a config file using configs/template.ini for it (e.g., longchat32k.ini) and specify the necessary parameters in it.
 
 ### Generating Answers
 
@@ -23,6 +26,7 @@ To run the script to generate answers to the tasks, use the following command:
 python main.py -c path_to_config
 ```
 
+The predictions will be saved in "predictions/" or wherever you chose in your config.
 ### Metric Evaluation
 
 For metric evaluation, use the following command:
@@ -30,13 +34,16 @@ For metric evaluation, use the following command:
 ```bash
 python eval.py -p path_to_predictions
 ```
-
+The results will be saved in "results/".
 ## Datasets
 
 LIBRA includes 21 datasets adapted for different tasks and complexities. The datasets are divided into four complexity groups and allow evaluation across various context lengths ranging from 4,000 to 128,000 tokens.
 
-![](https://i.imgur.com/BNleRrG.png)
-
+<p align="center">
+  <picture>
+    <img alt="LIBRA" src="docs/LIBRA_table.png" style="max-width: 100%;">
+  </picture>
+</p>
 ### Tasks and Complexity Groups
 
 #### Group I: Simple Information Retrieval

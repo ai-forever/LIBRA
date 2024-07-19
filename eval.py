@@ -4,7 +4,7 @@ import json
 import numpy as np
 
 from evaluation import dataset_loader, model_loader, answer_generator, metrics
-from configparser import ConfigParser
+
 
 def name_to_metric(name):
     dct = {
@@ -15,7 +15,7 @@ def name_to_metric(name):
     return dct[name]
 
 if __name__ == "__main__":
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--path", help="Enter predictions path", required=True)
     args = parser.parse_args()
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     results["total_score"] = np.mean(total_score)
         
     print(results)
-    save_path = "results/eval_" + args.path.split("/")[1]
+    save_path = "results/" + args.path.split("/")[1]
     if not os.path.exists(save_path.split("/")[0]):
         os.makedirs(save_path.split("/")[0])
     with open(save_path, "w") as outfile:

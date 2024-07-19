@@ -4,7 +4,7 @@ import transformers
 from transformers import LlamaTokenizer, AutoModelForCausalLM, AutoTokenizer, AutoConfig
 
 
-class ModelLoader():
+class ModelLoader:
     def __init__(self, model_path, model_torch_dtype, tokenizer_path=None, device="cpu"):
         self.model_path = model_path
         self.device = device
@@ -24,24 +24,23 @@ class ModelLoader():
             return dct_dtypes[dtype]
         else:
             return torch.float
-        
 
     def model_load(self):
-        config = transformers.AutoConfig.from_pretrained(
-        self.model_path,
-        )
+        config = transformers.AutoConfig.from_pretrained(self.model_path)
         if "LlamaForCausalLM" in config.architectures:
             model = AutoModelForCausalLM.from_pretrained(
                 self.model_path,
+                device_map=self.device,
                 attn_implementation='flash_attention_2',
                 trust_remote_code=True,
                 torch_dtype=self.model_torch_dtype,
-            ).eval().to(self.device)
+            ).eval()
         else:
             model = AutoModelForCausalLM.from_pretrained(
                 self.model_path,
+                device_map=self.device,
                 trust_remote_code=True,
                 torch_dtype=self.model_torch_dtype,
-            ).eval().to(self.device)
+            ).eval()
         tokenizer = AutoTokenizer.from_pretrained(self.tokenizer_path, trust_remote_code=True)
         return model, tokenizer

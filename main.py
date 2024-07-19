@@ -38,20 +38,18 @@ if __name__ == "__main__":
     print("Your model is evaluating on next tasks: ", datasets_names)
     results = {}
     for dataset_name in datasets_names:
-        dataset_path = datasets_params[dataset_name]["path"]
-        data_loader = dataset_loader.DatasetLoader(dataset_name=dataset_name,
-                                                   dataset_path=dataset_path)
+        data_loader = dataset_loader.DatasetLoader(dataset_name=dataset_name)
         dataset = data_loader.dataset_load()
         max_new_tokens = int(datasets_params[dataset_name]["max_new_tokens"])
         instruction = datasets_params[dataset_name]["instruction"]
         pred_generator = answer_generator.AnswerGenerator(model=model,
-                                                            tokenizer=tokenizer,
-                                                            device=device,
-                                                            dataset=dataset,
-                                                            instruction=instruction,
-                                                            context_lengths=context_lengths,
-                                                            max_context_length=max_context_length,
-                                                            max_new_tokens=max_new_tokens)
+                                                          tokenizer=tokenizer,
+                                                          device=device,
+                                                          dataset=dataset,
+                                                          instruction=instruction,
+                                                          context_lengths=context_lengths,
+                                                          max_context_length=max_context_length,
+                                                          max_new_tokens=max_new_tokens)
         generated_answers = pred_generator.generate_answers()
         results[dataset_name] = generated_answers
 

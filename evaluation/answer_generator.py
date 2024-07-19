@@ -1,10 +1,7 @@
-import os
-import json
-
 from tqdm import tqdm
 
 
-class AnswerGenerator():
+class AnswerGenerator:
     def __init__(self, model, tokenizer, device, dataset, instruction, context_lengths, max_context_length, max_new_tokens):
         self.model = model
         self.tokenizer = tokenizer
