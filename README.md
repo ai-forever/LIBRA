@@ -44,6 +44,7 @@ LIBRA includes 21 datasets adapted for different tasks and complexities. The dat
     <img alt="LIBRA" src="docs/LIBRA_table.png" style="max-width: 100%;">
   </picture>
 </p>
+
 ### Tasks and Complexity Groups
 
 #### Group I: Simple Information Retrieval
