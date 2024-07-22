@@ -1,7 +1,7 @@
 # LIBRA: Long Input Benchmark for Russian Analysis
 <p align="center">
   <picture>
-    <img alt="LIBRA" src="docs/LIBRA_logo.png" style="max-width: 50%;">
+    <img alt="LIBRA" src="docs/LIBRA_logo.png" style="max-width: 5%;">
   </picture>
 </p>
  
