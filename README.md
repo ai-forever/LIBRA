@@ -13,7 +13,7 @@ Welcome to the official GitHub repository for **LIBRA (Long Input Benchmark for 
 
 ### Adding Your Own Model
 
-In order to add your own dataset, create a config file using configs/template.ini for it (e.g., longchat32k.ini) and specify the necessary parameters in it.
+In order to add your own model, create a config file using configs/template.ini for it (e.g., longchat32k.ini) and specify the necessary parameters in it.
 
 ### Generating Answers
 
