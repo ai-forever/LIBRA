@@ -34,7 +34,7 @@ python eval.py -p path_to_predictions
 The results will be saved in "results/".
 ## Datasets
 
-LIBRA includes 21 datasets adapted for different tasks and complexities. The datasets are divided into four complexity groups and allow evaluation across various context lengths ranging from 4,000 to 128,000 tokens.
+LIBRA includes 21 datasets adapted for different tasks and complexities. The datasets are divided into four complexity groups and allow evaluation across various context lengths ranging from 4k to 128k tokens.
 
 <p align="center">
   <picture>
