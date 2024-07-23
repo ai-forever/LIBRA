@@ -11,25 +11,22 @@ Welcome to the official GitHub repository for **LIBRA (Long Input Benchmark for 
 
 ## Usage
 
-### Adding Your Own Dataset
+### Adding Your Own Model
 
-In order to add your own dataset, follow these steps:
-
-  1. Add your dataset to the configs/datasets_config.json file.
-  2. Create a config file using configs/template.ini for it (e.g., longchat32k.ini) and specify the necessary parameters in it.
+In order to add your own dataset, create a config file using configs/template.ini for it (e.g., longchat32k.ini) and specify the necessary parameters in it.
 
 ### Generating Answers
 
-To run the script to generate answers to the tasks, use the following command:
+First, you need to generate answers for each task, to do this, use the following command:
 
 ```bash
-python main.py -c path_to_config
+python predict.py -c path_to_config
 ```
 
 The predictions will be saved in "predictions/" or wherever you chose in your config.
 ### Metric Evaluation
 
-For metric evaluation, use the following command:
+After the generated predictions are saved, you need to run the command to evaluate:
 
 ```bash
 python eval.py -p path_to_predictions
