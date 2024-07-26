@@ -4,13 +4,18 @@ import json
 
 from evaluation import dataset_loader, model_loader, answer_generator
 from configparser import ConfigParser
+from huggingface_hub import login
 
 
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="Enter config path", required=True)
+    parser.add_argument("-hf", "--hf_token", help="Enter hugging face token")
     args = parser.parse_args()
+
+    if args.hf_token:
+        login(token=args.hf_token)
 
     config = ConfigParser()
     config.read(args.config)
