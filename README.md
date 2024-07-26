@@ -45,29 +45,29 @@ LIBRA includes 21 datasets adapted for different tasks and complexities. The dat
 ### Tasks and Complexity Groups
 
 #### Group I: Simple Information Retrieval
-- **Passkey**: Extract a relevant piece of code number from a long text fragment.
+- **Passkey**: Extract a relevant piece of code number from a long text fragment. Based on the original [PassKey test](https://github.com/CStanKonrad/long_llama/blob/main/examples/passkey.py) from the m LongLLaMA’s GitHub repo.
 - **PasskeyWithLibrusec**: Similar to Passkey but with added noise from Librusec texts.
 
 #### Group II: Question Answering and Multiple Choice
-- **MatreshkaNames**: Identify the person in dialogues based on the discussed topic.
+- **MatreshkaNames**: Identify the person in dialogues based on the discussed topic. We used [Matreshka](https://huggingface.co/datasets/zjkarina/matreshka) dataset and [Russian Names](https://www.kaggle.com/datasets/rai220/russian-cyrillic-names-and-sex/data) dataset to create this and the next task.
 - **MatreshkaYesNo**: Indicate whether a specific topic was mentioned in the dialog.
-- **LibrusecHistory**: Answer questions based on historical texts.
-- **ruTREC**: Few-shot in-context learning for topic classification. Created by translating the TREC dataset from LongBench.
-- **ruSciFi**: Answer true/false based on context and general world knowledge. Translation of SciFi dataset from L-Eval.
+- **LibrusecHistory**: Answer questions based on historical texts. Ideologically similiar to the [PassageRetrieval dataset](https://huggingface.co/datasets/THUDM/LongBench/viewer/passage_retrieval_en) from LongBench.
+- **ruTREC**: Few-shot in-context learning for topic classification. Created by translating the [TREC dataset](https://huggingface.co/datasets/THUDM/LongBench/viewer/trec_e) from LongBench.
+- **ruSciFi**: Answer true/false based on context and general world knowledge. Translation of [SciFi dataset](https://huggingface.co/datasets/L4NLP/LEval/viewer/sci_f) from L-Eval which originally was based on [SF-Gram](https://github.com/nschaetti/SFGram-dataset).
 - **ruSciAbstractRetrieval**: Retrieve relevant paragraphs from scientific abstracts.
-- **ruTPO**: Multiple-choice questions similar to TOEFL exams. Translation of the TPO dataset from L-Eval.
-- **ruQuALITY**: Multiple-choice QA tasks based on detailed texts. Created by translating the QuALITY dataset from L-Eval.
+- **ruTPO**: Multiple-choice questions similar to TOEFL exams. Translation of the [TPO dataset](https://huggingface.co/datasets/L4NLP/LEval/viewer/tpo) from L-Eval.
+- **ruQuALITY**: Multiple-choice QA tasks based on detailed texts. Created by translating the [QuALITY dataset](https://huggingface.co/datasets/L4NLP/LEval/viewer/quality) from L-Eval.
 
 #### Group III: Multi-hop Question Answering
 - **ruBABILongQA**: 5 long-context reasoning tasks for QA using facts hidden among irrelevant information.
 - **LongContextMultiQ**: Multi-hop QA based on Wikidata and Wikipedia.
 - **LibrusecMHQA**: Multi-hop QA requiring information distributed across several text parts.
-- **ru2WikiMultihopQA**: Translation of the 2WikiMultihopQA dataset from LongBench.
+- **ru2WikiMultihopQA**: Translation of the [2WikiMultihopQA dataset](https://huggingface.co/datasets/THUDM/LongBench/viewer/2wikimqa_e) from LongBench.
 
 #### Group IV: Complex Reasoning and Mathematical Problems
-- **ruSciPassageCount**: Count unique paragraphs in a long text.
-- **ruQasper**: Question Answering over academic research papers. Created by translating the Qasper dataset from LongBench.
-- **ruGSM100**: Solve math problems using Chain-of-Thought reasoning.
+- **ruSciPassageCount**: Count unique paragraphs in a long text. Uses the basic idea of the original [PassageCount dataset](https://huggingface.co/datasets/THUDM/LongBench/viewer/passage_count) from LongBench.
+- **ruQasper**: Question Answering over academic research papers. Created by translating the [Qasper dataset](https://huggingface.co/datasets/THUDM/LongBench/viewer/qasper_e) from LongBench.
+- **ruGSM100**: Solve math problems using Chain-of-Thought reasoning. Created by translating the [GSM100](https://huggingface.co/datasets/L4NLP/LEval/viewer/gsm100) dataset from L-Eval.
 
 ## License
 
