@@ -69,6 +69,16 @@ LIBRA includes 21 datasets adapted for different tasks and complexities. The dat
 - **ruQasper**: Question Answering over academic research papers. Created by translating the [Qasper dataset](https://huggingface.co/datasets/THUDM/LongBench/viewer/qasper_e) from LongBench.
 - **ruGSM100**: Solve math problems using Chain-of-Thought reasoning. Created by translating the [GSM100](https://huggingface.co/datasets/L4NLP/LEval/viewer/gsm100) dataset from L-Eval.
 
-## License
+## Citation
 
-This project is licensed under the MIT License.
+```
+@misc{churin2024longinputbenchmarkrussian,
+      title={Long Input Benchmark for Russian Analysis}, 
+      author={Igor Churin and Murat Apishev and Maria Tikhonova and Denis Shevelev and Aydar Bulatov and Yuri Kuratov and Sergei Averkiev and Alena Fenogenova},
+      year={2024},
+      eprint={2408.02439},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2408.02439}, 
+}
+```
