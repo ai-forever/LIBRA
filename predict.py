@@ -20,6 +20,8 @@ if __name__ == "__main__":
     config = ConfigParser()
     config.read(args.config)
 
+    engine = json.loads(config.get('parameters', 'engine'))
+    tensor_parallel_size = json.loads(config.get('parameters', 'tensor_parallel_size'))
     datasets_names = json.loads(config.get('parameters', 'datasets'))
     context_lengths = json.loads(config.get('parameters', 'context_lengths'))
     max_context_length = int(config.get('parameters', 'max_context_length'))
@@ -32,6 +34,8 @@ if __name__ == "__main__":
     model_loader = model_loader.ModelLoader(model_path=model_path,
                                             model_torch_dtype=model_torch_dtype,
                                             tokenizer_path=tokenizer_path,
+                                            engine=engine,
+                                            tensor_parallel_size=tensor_parallel_size,
                                             device=device)
     model, tokenizer = model_loader.model_load()
     
@@ -43,11 +47,13 @@ if __name__ == "__main__":
     print("Your model is evaluating on next tasks: ", datasets_names)
     results = {}
     for dataset_name in datasets_names:
+        print(dataset_name)
         data_loader = dataset_loader.DatasetLoader(dataset_name=dataset_name)
         dataset = data_loader.dataset_load()
         max_new_tokens = int(datasets_params[dataset_name]["max_new_tokens"])
         instruction = datasets_params[dataset_name]["instruction"]
         pred_generator = answer_generator.AnswerGenerator(model=model,
+                                                          engine=engine,
                                                           tokenizer=tokenizer,
                                                           device=device,
                                                           dataset=dataset,
@@ -63,6 +69,3 @@ if __name__ == "__main__":
     with open(save_path, "w") as outfile:
         json.dump(results, outfile)
     print(f"predictions were saved here: {save_path}")
-
-
-    
