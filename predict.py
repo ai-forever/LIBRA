@@ -39,7 +39,7 @@ if __name__ == "__main__":
                                             device=device)
     model, tokenizer = model_loader.model_load()
     
-    datasets_params = json.load(open("configs/datasets_config.json", "r"))
+    datasets_params = json.load(open("configs/datasets_config.json", "r", encoding="utf-8"))
 
     if "all" in datasets_names:
         datasets_names = list(datasets_params.keys())
