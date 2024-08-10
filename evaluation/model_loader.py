@@ -1,15 +1,14 @@
 import torch
+import os
 import transformers
 
 from transformers import LlamaTokenizer, AutoModelForCausalLM, AutoTokenizer, AutoConfig
 from vllm import LLM
 
 class ModelLoader:
-    def __init__(self, model_path, model_torch_dtype, tokenizer_path=None, engine="hf", tensor_parallel_size=1, device="cpu"):
+    def __init__(self, model_path, model_torch_dtype, tokenizer_path=None, device="cpu"):
         self.model_path = model_path
-        self.engine = engine
         self.device = device
-        self.tensor_parallel_size=tensor_parallel_size
         self.model_torch_dtype = self.get_dtype(model_torch_dtype)
         if tokenizer_path:
             self.tokenizer_path = tokenizer_path
@@ -28,28 +27,40 @@ class ModelLoader:
             return torch.float
 
     def model_load(self):
-        if self.engine == 'hf':
-            config = transformers.AutoConfig.from_pretrained(self.model_path)
-            if "LlamaForCausalLM" in config.architectures:
-                model = AutoModelForCausalLM.from_pretrained(
-                    self.model_path,
-                    device_map=self.device,
-                    attn_implementation='flash_attention_2',
-                    trust_remote_code=True,
-                    torch_dtype=self.model_torch_dtype,
-                ).eval()
-            else:
-                model = AutoModelForCausalLM.from_pretrained(
-                    self.model_path,
-                    device_map=self.device,
-                    trust_remote_code=True,
-                    torch_dtype=self.model_torch_dtype,
-                ).eval()
-            tokenizer = AutoTokenizer.from_pretrained(self.tokenizer_path, trust_remote_code=True)
-        elif self.engine == 'vllm':
-            model = LLM(model=self.model_path, tensor_parallel_size=self.tensor_parallel_size, dtype=self.model_torch_dtype, trust_remote_code=True)
-            tokenizer = model.get_tokenizer()
+        config = transformers.AutoConfig.from_pretrained(self.model_path)
+        if "LlamaForCausalLM" in config.architectures:
+            model = AutoModelForCausalLM.from_pretrained(
+                self.model_path,
+                device_map=self.device,
+                attn_implementation='flash_attention_2',
+                trust_remote_code=True,
+                torch_dtype=self.model_torch_dtype,
+            ).eval()
         else:
-            raise Exception('Engine should be \"hf\" or \"vllm\"')
+            model = AutoModelForCausalLM.from_pretrained(
+                self.model_path,
+                device_map=self.device,
+                trust_remote_code=True,
+                torch_dtype=self.model_torch_dtype,
+            ).eval()
+        tokenizer = AutoTokenizer.from_pretrained(self.tokenizer_path, trust_remote_code=True)
+        return model, tokenizer
+
+class vLLM_ModelLoader(ModelLoader):
+    def __init__(self, model_path, model_torch_dtype, tokenizer_path=None, tensor_parallel_size=1, gpu_memory_utilization=0.9, device="cpu"):
+        super().__init__(model_path, model_torch_dtype, tokenizer_path, device)
+        self.tensor_parallel_size=tensor_parallel_size
+        self.gpu_memory_utilization=gpu_memory_utilization
+
+    def model_load(self):
+        model = LLM(
+                model=self.model_path, 
+                tensor_parallel_size=self.tensor_parallel_size, 
+                dtype=self.model_torch_dtype, 
+                trust_remote_code=True,
+                distributed_executor_backend="ray",
+                gpu_memory_utilization=self.gpu_memory_utilization
+        )
+        tokenizer = model.get_tokenizer()
 
         return model, tokenizer
