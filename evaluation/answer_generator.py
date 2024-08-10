@@ -16,8 +16,7 @@ class AnswerGenerator:
         prompt = self.instruction
         prompt = prompt.replace("{context}", sample["context"])
         prompt = prompt.replace("{input}", sample["input"])
-        sample['prompt'] = prompt
-        return sample
+        return prompt      
         
     def generate_answers(self):
         generated_answers = []
@@ -43,6 +42,13 @@ class AnswerGenerator:
         return generated_answers
 
 class vLLM_AnswerGenerator(AnswerGenerator):
+    def create_prompt(self, sample):
+        prompt = self.instruction
+        prompt = prompt.replace("{context}", sample["context"])
+        prompt = prompt.replace("{input}", sample["input"])
+        sample['prompt'] = prompt
+        return sample
+    
     def generate_answers(self):
 
         self.dataset = self.dataset.filter(lambda x: x['length'] in self.context_lengths)
@@ -61,5 +67,3 @@ class vLLM_AnswerGenerator(AnswerGenerator):
                         }
             generated_answers.append(generated_answer)
         return generated_answers
-
-
