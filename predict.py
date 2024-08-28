@@ -28,6 +28,16 @@ if __name__ == "__main__":
     model_torch_dtype = config.get('parameters', 'model_torch_dtype')
     device = config.get('parameters', 'device')
     save_path = config.get('parameters', 'save_path')
+
+    if config.has_option('parameters', 'chat_model'):
+        chat_model = bool(config.get('parameters', 'chat_model'))
+    else:
+        chat_model = False
+    
+    if config.has_option('parameters', 'sys_prompt'):
+        sys_prompt = config.get('parameters', 'sys_prompt')
+    else:
+        sys_prompt = None
     
     model_loader = model_loader.ModelLoader(model_path=model_path,
                                             model_torch_dtype=model_torch_dtype,
@@ -54,7 +64,9 @@ if __name__ == "__main__":
                                                           instruction=instruction,
                                                           context_lengths=context_lengths,
                                                           max_context_length=max_context_length,
-                                                          max_new_tokens=max_new_tokens)
+                                                          max_new_tokens=max_new_tokens,
+                                                          chat_model=chat_model,
+                                                          sys_prompt=sys_prompt)
         generated_answers = pred_generator.generate_answers()
         results[dataset_name] = generated_answers
 
