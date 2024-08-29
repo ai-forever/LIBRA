@@ -75,6 +75,8 @@ class vLLM_ModelLoader(ModelLoader):
             distributed_executor_backend="ray",
             gpu_memory_utilization=self.gpu_memory_utilization,
         )
-        tokenizer = model.get_tokenizer()
+        tokenizer = AutoTokenizer.from_pretrained(
+            self.tokenizer_path, trust_remote_code=True
+        )
 
         return model, tokenizer
