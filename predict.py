@@ -20,34 +20,37 @@ if __name__ == "__main__":
     config = ConfigParser()
     config.read(args.config)
 
-    datasets_names = json.loads(config.get("parameters", "datasets"))
-    context_lengths = json.loads(config.get("parameters", "context_lengths"))
-    max_context_length = int(config.get("parameters", "max_context_length"))
-    model_path = config.get("parameters", "model_path")
-    tokenizer_path = config.get("parameters", "tokenizer_path")
-    model_torch_dtype = config.get("parameters", "model_torch_dtype")
-    device = config.get("parameters", "device")
-    save_path = config.get("parameters", "save_path")
+    engine = json.loads(config.get('parameters', 'engine'))
 
-    if config.has_option("parameters", "chat_model"):
-        chat_model = bool(config.get("parameters", "chat_model"))
+    tensor_parallel_size = int(json.loads(config.get('parameters', 'tensor_parallel_size')))
+    gpu_memory_utilization = float(json.loads(config.get('parameters', 'gpu_memory_utilization')))
+    datasets_names = json.loads(config.get('parameters', 'datasets'))
+    context_lengths = json.loads(config.get('parameters', 'context_lengths'))
+    max_context_length = int(config.get('parameters', 'max_context_length'))
+    model_path = config.get('parameters', 'model_path')
+    tokenizer_path = config.get('parameters', 'tokenizer_path')
+    model_torch_dtype = config.get('parameters', 'model_torch_dtype')
+    device = config.get('parameters', 'device')
+    save_path = config.get('parameters', 'save_path')
+    
+    if engine == 'hf':
+        model_loader = model_loader.ModelLoader(model_path=model_path,
+                                                model_torch_dtype=model_torch_dtype,
+                                                tokenizer_path=tokenizer_path,
+                                                device=device)
+    elif engine == 'vllm':
+        model_loader = model_loader.vLLM_ModelLoader(model_path=model_path,
+                                        model_torch_dtype=model_torch_dtype,
+                                        tokenizer_path=tokenizer_path,
+                                        gpu_memory_utilization=gpu_memory_utilization,
+                                        tensor_parallel_size=tensor_parallel_size,
+                                        device=device)
     else:
-        chat_model = False
+        raise Exception('Engine should be \"hf\" or \"vllm\"')
 
-    if config.has_option("parameters", "sys_prompt"):
-        sys_prompt = config.get("parameters", "sys_prompt")
-    else:
-        sys_prompt = None
-
-    model_loader = model_loader.ModelLoader(
-        model_path=model_path,
-        model_torch_dtype=model_torch_dtype,
-        tokenizer_path=tokenizer_path,
-        device=device,
-    )
     model, tokenizer = model_loader.model_load()
-
-    datasets_params = json.load(open("configs/datasets_config.json", "r"))
+    
+    datasets_params = json.load(open("configs/datasets_config.json", "r", encoding="utf-8"))
 
     if "all" in datasets_names:
         datasets_names = list(datasets_params.keys())
@@ -55,10 +58,33 @@ if __name__ == "__main__":
     print("Your model is evaluating on next tasks: ", datasets_names)
     results = {}
     for dataset_name in datasets_names:
+        print(dataset_name)
         data_loader = dataset_loader.DatasetLoader(dataset_name=dataset_name)
         dataset = data_loader.dataset_load()
         max_new_tokens = int(datasets_params[dataset_name]["max_new_tokens"])
         instruction = datasets_params[dataset_name]["instruction"]
+
+        if engine == 'hf':
+            pred_generator = answer_generator.AnswerGenerator(model=model,
+                                                            tokenizer=tokenizer,
+                                                            device=device,
+                                                            dataset=dataset,
+                                                            instruction=instruction,
+                                                            context_lengths=context_lengths,
+                                                            max_context_length=max_context_length,
+                                                            max_new_tokens=max_new_tokens)
+        elif engine == 'vllm':
+            pred_generator = answer_generator.vLLM_AnswerGenerator(model=model,
+                                                tokenizer=tokenizer,
+                                                device=device,
+                                                dataset=dataset,
+                                                instruction=instruction,
+                                                context_lengths=context_lengths,
+                                                max_context_length=max_context_length,
+                                                max_new_tokens=max_new_tokens)
+        else:
+            raise Exception('Engine should be \"hf\" or \"vllm\"')
+
         pred_generator = answer_generator.AnswerGenerator(
             model=model,
             tokenizer=tokenizer,

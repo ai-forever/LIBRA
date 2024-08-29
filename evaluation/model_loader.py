@@ -1,8 +1,9 @@
 import torch
+import os
 import transformers
 
 from transformers import LlamaTokenizer, AutoModelForCausalLM, AutoTokenizer, AutoConfig
-
+from vllm import LLM
 
 class ModelLoader:
     def __init__(
@@ -47,4 +48,23 @@ class ModelLoader:
         tokenizer = AutoTokenizer.from_pretrained(
             self.tokenizer_path, trust_remote_code=True
         )
+        return model, tokenizer
+
+class vLLM_ModelLoader(ModelLoader):
+    def __init__(self, model_path, model_torch_dtype, tokenizer_path=None, tensor_parallel_size=1, gpu_memory_utilization=0.9, device="cpu"):
+        super().__init__(model_path, model_torch_dtype, tokenizer_path, device)
+        self.tensor_parallel_size=tensor_parallel_size
+        self.gpu_memory_utilization=gpu_memory_utilization
+
+    def model_load(self):
+        model = LLM(
+                model=self.model_path, 
+                tensor_parallel_size=self.tensor_parallel_size, 
+                dtype=self.model_torch_dtype, 
+                trust_remote_code=True,
+                distributed_executor_backend="ray",
+                gpu_memory_utilization=self.gpu_memory_utilization
+        )
+        tokenizer = model.get_tokenizer()
+
         return model, tokenizer

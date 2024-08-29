@@ -1,4 +1,5 @@
 accelerate==0.28.0
 datasets==2.18.0
-transformers==4.40.0
+transformers==4.43.2
 flash-attn==2.6.1
+vllm==0.5.4
