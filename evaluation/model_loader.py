@@ -6,7 +6,9 @@ from transformers import LlamaTokenizer, AutoModelForCausalLM, AutoTokenizer, Au
 from vllm import LLM
 
 class ModelLoader:
-    def __init__(self, model_path, model_torch_dtype, tokenizer_path=None, device="cpu"):
+    def __init__(
+        self, model_path, model_torch_dtype, tokenizer_path=None, device="cpu"
+    ):
         self.model_path = model_path
         self.device = device
         self.model_torch_dtype = self.get_dtype(model_torch_dtype)
@@ -14,13 +16,13 @@ class ModelLoader:
             self.tokenizer_path = tokenizer_path
         else:
             self.tokenizer_path = model_path
-    
+
     def get_dtype(self, dtype):
         dct_dtypes = {
-                    "float16": torch.float16,
-                    "bfloat16": torch.bfloat16,
-                    "float32": torch.float
-                     }
+            "float16": torch.float16,
+            "bfloat16": torch.bfloat16,
+            "float32": torch.float,
+        }
         if dtype in dct_dtypes:
             return dct_dtypes[dtype]
         else:
@@ -32,7 +34,7 @@ class ModelLoader:
             model = AutoModelForCausalLM.from_pretrained(
                 self.model_path,
                 device_map=self.device,
-                attn_implementation='flash_attention_2',
+                attn_implementation="flash_attention_2",
                 trust_remote_code=True,
                 torch_dtype=self.model_torch_dtype,
             ).eval()
@@ -43,7 +45,9 @@ class ModelLoader:
                 trust_remote_code=True,
                 torch_dtype=self.model_torch_dtype,
             ).eval()
-        tokenizer = AutoTokenizer.from_pretrained(self.tokenizer_path, trust_remote_code=True)
+        tokenizer = AutoTokenizer.from_pretrained(
+            self.tokenizer_path, trust_remote_code=True
+        )
         return model, tokenizer
 
 class vLLM_ModelLoader(ModelLoader):

@@ -3,9 +3,9 @@ import string
 
 from collections import Counter
 
-    
+
 def normalize_answer(s):
-        
+
     def white_space_fix(text):
         return " ".join(text.split())
 

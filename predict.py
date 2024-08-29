@@ -8,14 +8,14 @@ from huggingface_hub import login
 
 
 if __name__ == "__main__":
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="Enter config path", required=True)
-    parser.add_argument("-hf", "--hf_token", help="Enter hugging face token")
+    parser.add_argument("-t", "--token", help="Enter Hugging Face token")
     args = parser.parse_args()
 
-    if args.hf_token:
-        login(token=args.hf_token)
+    if args.token:
+        login(token=args.token)
 
     config = ConfigParser()
     config.read(args.config)
@@ -85,6 +85,18 @@ if __name__ == "__main__":
         else:
             raise Exception('Engine should be \"hf\" or \"vllm\"')
 
+        pred_generator = answer_generator.AnswerGenerator(
+            model=model,
+            tokenizer=tokenizer,
+            device=device,
+            dataset=dataset,
+            instruction=instruction,
+            context_lengths=context_lengths,
+            max_context_length=max_context_length,
+            max_new_tokens=max_new_tokens,
+            chat_model=chat_model,
+            sys_prompt=sys_prompt,
+        )
         generated_answers = pred_generator.generate_answers()
         results[dataset_name] = generated_answers
 
