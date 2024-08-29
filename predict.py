@@ -99,18 +99,6 @@ if __name__ == "__main__":
         else:
             raise Exception('Engine should be "hf" or "vllm"')
 
-        pred_generator = answer_generator.AnswerGenerator(
-            model=model,
-            tokenizer=tokenizer,
-            device=device,
-            dataset=dataset,
-            instruction=instruction,
-            context_lengths=context_lengths,
-            max_context_length=max_context_length,
-            max_new_tokens=max_new_tokens,
-            chat_model=chat_model,
-            sys_prompt=sys_prompt,
-        )
         generated_answers = pred_generator.generate_answers()
         results[dataset_name] = generated_answers
 
