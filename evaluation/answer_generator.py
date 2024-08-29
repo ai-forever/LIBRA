@@ -1,4 +1,4 @@
-from tqdm import tqdm
+from tqdm.notebook import tqdm
 
 
 class AnswerGenerator:
