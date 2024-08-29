@@ -14,12 +14,13 @@ def name_to_metric(name):
     }
     return dct[name]
 
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-p", "--path", help="Enter predictions path", required=True)
     args = parser.parse_args()
-    
+
     predictions = json.load(open(args.path, "r"))
     datasets_params = json.load(open("configs/datasets_config.json", "r"))
     results = {}
@@ -30,10 +31,12 @@ if __name__ == "__main__":
             length = prediction["length"]
             if length not in results[dataset]:
                 results[dataset][length] = []
-            
+
             positive_scores = []
             for positive_output in prediction["positive_outputs"]:
-                score = metric_calculation(str(prediction["model_answer"]), str(positive_output))
+                score = metric_calculation(
+                    str(prediction["model_answer"]), str(positive_output)
+                )
                 positive_scores.append(score)
             score = max(positive_scores)
             if prediction["negative_outputs"]:
@@ -41,15 +44,17 @@ if __name__ == "__main__":
                 for negative_output in prediction["negative_outputs"]:
                     if negative_output in prediction["model_answer"]:
                         negatives_count += 1
-                
+
                 if negatives_count == len(prediction["negative_outputs"]):
                     score = 0.0
                 else:
-                    score -= (1.0/len(prediction["negative_outputs"])) * negatives_count
+                    score -= (
+                        1.0 / len(prediction["negative_outputs"])
+                    ) * negatives_count
                     if score < 0:
                         score = 0.0
             results[dataset][length].append(score)
-            
+
     total_score = []
     for dataset in results.keys():
         dataset_score = []
@@ -62,7 +67,7 @@ if __name__ == "__main__":
         results[dataset]["dataset_total_score"] = np.mean(dataset_score)
         total_score.append(results[dataset]["dataset_total_score"])
     results["total_score"] = np.mean(total_score)
-        
+
     print(results)
     save_path = "results/" + args.path.split("/")[1]
     if not os.path.exists(save_path.split("/")[0]):
