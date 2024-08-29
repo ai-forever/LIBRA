@@ -40,21 +40,21 @@ if __name__ == "__main__":
         sys_prompt = None
 
     if config.has_option("parameters", "engine"):
-        engine = bool(config.get("parameters", "engine"))
+        engine = config.get("parameters", "engine")
     else:
         engine = "hf"
 
     if config.has_option("parameters", "tensor_parallel_size"):
         tensor_parallel_size = int(config.get("parameters", "tensor_parallel_size"))
     else:
-        tensor_parallel_size = "hf"
+        tensor_parallel_size = 1
 
     if config.has_option("parameters", "gpu_memory_utilization"):
         gpu_memory_utilization = float(
             config.get("parameters", "gpu_memory_utilization")
         )
     else:
-        gpu_memory_utilization = "hf"
+        gpu_memory_utilization = 0.9
 
     if engine == "hf":
         model_loader = model_loader.ModelLoader(
