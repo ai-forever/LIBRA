@@ -11,11 +11,11 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="Enter config path", required=True)
-    parser.add_argument("-hf", "--hf_token", help="Enter hugging face token")
+    parser.add_argument("-t", "--token", help="Enter Hugging Face token")
     args = parser.parse_args()
 
-    if args.hf_token:
-        login(token=args.hf_token)
+    if args.token:
+        login(token=args.token)
 
     config = ConfigParser()
     config.read(args.config)
