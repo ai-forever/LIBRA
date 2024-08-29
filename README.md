@@ -24,7 +24,7 @@ First, you need to generate answers for each task, to do this, use the following
 python predict.py -c path_to_config
 ```
 
-The predictions will be saved in "predictions/" or wherever you chose in your config.
+The predictions will be saved in "predictions/" or wherever you choose in your config.
 
 ### Metric Evaluation
 
