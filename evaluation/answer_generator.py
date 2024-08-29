@@ -1,6 +1,7 @@
 from vllm import SamplingParams
 from tqdm import tqdm
 
+
 class AnswerGenerator:
     def __init__(
         self,
@@ -93,29 +94,39 @@ class AnswerGenerator:
             generated_answers.append(generated_answer)
         return generated_answers
 
+
 class vLLM_AnswerGenerator(AnswerGenerator):
     def create_prompt(self, sample):
         prompt = self.instruction
         prompt = prompt.replace("{context}", sample["context"])
         prompt = prompt.replace("{input}", sample["input"])
-        sample['prompt'] = prompt
+        sample["prompt"] = prompt
         return sample
-    
-    def generate_answers(self):
 
-        self.dataset = self.dataset.filter(lambda x: x['length'] in self.context_lengths)
+    def generate_answers(self):
+        self.dataset = self.dataset.filter(
+            lambda x: x["length"] in self.context_lengths
+        )
         self.dataset = self.dataset.map(self.create_prompt)
-        out = self.model.generate(self.dataset['prompt'], sampling_params=SamplingParams(temperature=0.0, max_tokens=self.max_new_tokens, use_beam_search=False, truncate_prompt_tokens=self.max_context_length))
-        
+        out = self.model.generate(
+            self.dataset["prompt"],
+            sampling_params=SamplingParams(
+                temperature=0.0,
+                max_tokens=self.max_new_tokens,
+                use_beam_search=False,
+                truncate_prompt_tokens=self.max_context_length,
+            ),
+        )
+
         generated_answers = []
 
         for ind, request in enumerate(out):
             model_answer = request.outputs[0].text
             generated_answer = {
-                        "length": self.dataset[ind]["length"],
-                        "model_answer": model_answer,
-                        "positive_outputs": self.dataset[ind]["positive_outputs"],
-                        "negative_outputs": self.dataset[ind]["negative_outputs"]
-                        }
+                "length": self.dataset[ind]["length"],
+                "model_answer": model_answer,
+                "positive_outputs": self.dataset[ind]["positive_outputs"],
+                "negative_outputs": self.dataset[ind]["negative_outputs"],
+            }
             generated_answers.append(generated_answer)
         return generated_answers
