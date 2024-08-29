@@ -64,6 +64,7 @@ class AnswerGenerator:
 
     def generate_answers(self):
         generated_answers = []
+
         for sample in tqdm(self.dataset):
             if sample["length"] not in self.context_lengths:
                 continue
