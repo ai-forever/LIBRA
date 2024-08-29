@@ -5,6 +5,7 @@ import json
 from evaluation import dataset_loader, model_loader, answer_generator
 from configparser import ConfigParser
 from huggingface_hub import login
+from pathlib import Path
 
 
 if __name__ == "__main__":
@@ -54,11 +55,16 @@ if __name__ == "__main__":
 
     print("Your model is evaluating on next tasks: ", datasets_names)
     results = {}
+
     for dataset_name in datasets_names:
+        print(f"Evaluating dataset: {dataset_name}")
+
         data_loader = dataset_loader.DatasetLoader(dataset_name=dataset_name)
         dataset = data_loader.dataset_load()
+
         max_new_tokens = int(datasets_params[dataset_name]["max_new_tokens"])
         instruction = datasets_params[dataset_name]["instruction"]
+
         pred_generator = answer_generator.AnswerGenerator(
             model=model,
             tokenizer=tokenizer,
@@ -74,8 +80,9 @@ if __name__ == "__main__":
         generated_answers = pred_generator.generate_answers()
         results[dataset_name] = generated_answers
 
-    if not os.path.exists(save_path.split("/")[0]):
-        os.makedirs(save_path.split("/")[0])
-    with open(save_path, "w") as outfile:
-        json.dump(results, outfile)
-    print(f"predictions were saved here: {save_path}")
+    Path(save_path).parent.mkdir(parents=True, exist_ok=True)
+
+    with open(save_path, "w") as fout:
+        json.dump(results, fout)
+
+    print(f"Predictions were saved here: {save_path}")
