@@ -103,6 +103,29 @@ class vLLM_AnswerGenerator(AnswerGenerator):
         sample["prompt"] = prompt
         return sample
 
+    def create_prompt_with_chat_template(self, sample):
+        prompt = self.instruction
+        prompt = prompt.replace("{context}", sample["context"])
+        prompt = prompt.replace("{input}", sample["input"])
+        messages = []
+        if self.sys_prompt:
+            messages.append(
+                {
+                    "role": "system",
+                    "content": self.sys_prompt,
+                }
+            )
+        messages.append({"role": "user", "content": prompt})
+        prompt = self.tokenizer.apply_chat_template(
+            messages,
+            add_generation_prompt=True,
+            truncation=True,
+            max_length=self.max_context_length,
+            tokenize=False,
+        )
+        sample["prompt"] = prompt
+        return inputs
+
     def generate_answers(self):
         self.dataset = self.dataset.filter(
             lambda x: x["length"] in self.context_lengths
