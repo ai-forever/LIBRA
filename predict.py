@@ -20,14 +20,6 @@ if __name__ == "__main__":
     config = ConfigParser()
     config.read(args.config)
 
-    engine = json.loads(config.get("parameters", "engine"))
-
-    tensor_parallel_size = int(
-        json.loads(config.get("parameters", "tensor_parallel_size"))
-    )
-    gpu_memory_utilization = float(
-        json.loads(config.get("parameters", "gpu_memory_utilization"))
-    )
     datasets_names = json.loads(config.get("parameters", "datasets"))
     context_lengths = json.loads(config.get("parameters", "context_lengths"))
     max_context_length = int(config.get("parameters", "max_context_length"))
@@ -36,6 +28,31 @@ if __name__ == "__main__":
     model_torch_dtype = config.get("parameters", "model_torch_dtype")
     device = config.get("parameters", "device")
     save_path = config.get("parameters", "save_path")
+
+    if config.has_option("parameters", "chat_model"):
+        chat_model = bool(config.get("parameters", "chat_model"))
+    else:
+        chat_model = False
+
+    if config.has_option("parameters", "sys_prompt"):
+        sys_prompt = config.get("parameters", "sys_prompt")
+    else:
+        sys_prompt = None
+
+    if config.has_option("parameters", "engine"):
+        chat_model = bool(config.get("parameters", "engine"))
+    else:
+        chat_model = "hf"
+
+    if config.has_option("parameters", "tensor_parallel_size"):
+        chat_model = int(config.get("parameters", "tensor_parallel_size"))
+    else:
+        chat_model = "hf"
+
+    if config.has_option("parameters", "gpu_memory_utilization"):
+        chat_model = float(config.get("parameters", "gpu_memory_utilization"))
+    else:
+        chat_model = "hf"
 
     if engine == "hf":
         model_loader = model_loader.ModelLoader(
