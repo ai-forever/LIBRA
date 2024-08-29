@@ -103,6 +103,8 @@ if __name__ == "__main__":
                 context_lengths=context_lengths,
                 max_context_length=max_context_length,
                 max_new_tokens=max_new_tokens,
+                chat_model=chat_model,
+                sys_prompt=sys_prompt,
             )
         elif engine == "vllm":
             pred_generator = answer_generator.vLLM_AnswerGenerator(
@@ -114,6 +116,8 @@ if __name__ == "__main__":
                 context_lengths=context_lengths,
                 max_context_length=max_context_length,
                 max_new_tokens=max_new_tokens,
+                chat_model=chat_model,
+                sys_prompt=sys_prompt,
             )
         else:
             raise Exception('Engine should be "hf" or "vllm"')
