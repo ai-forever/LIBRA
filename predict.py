@@ -20,14 +20,6 @@ if __name__ == "__main__":
     config = ConfigParser()
     config.read(args.config)
 
-    engine = json.loads(config.get("parameters", "engine"))
-
-    tensor_parallel_size = int(
-        json.loads(config.get("parameters", "tensor_parallel_size"))
-    )
-    gpu_memory_utilization = float(
-        json.loads(config.get("parameters", "gpu_memory_utilization"))
-    )
     datasets_names = json.loads(config.get("parameters", "datasets"))
     context_lengths = json.loads(config.get("parameters", "context_lengths"))
     max_context_length = int(config.get("parameters", "max_context_length"))
@@ -36,6 +28,33 @@ if __name__ == "__main__":
     model_torch_dtype = config.get("parameters", "model_torch_dtype")
     device = config.get("parameters", "device")
     save_path = config.get("parameters", "save_path")
+
+    if config.has_option("parameters", "chat_model"):
+        chat_model = bool(config.get("parameters", "chat_model"))
+    else:
+        chat_model = False
+
+    if config.has_option("parameters", "sys_prompt"):
+        sys_prompt = config.get("parameters", "sys_prompt")
+    else:
+        sys_prompt = None
+
+    if config.has_option("parameters", "engine"):
+        engine = config.get("parameters", "engine")
+    else:
+        engine = "hf"
+
+    if config.has_option("parameters", "tensor_parallel_size"):
+        tensor_parallel_size = int(config.get("parameters", "tensor_parallel_size"))
+    else:
+        tensor_parallel_size = 1
+
+    if config.has_option("parameters", "gpu_memory_utilization"):
+        gpu_memory_utilization = float(
+            config.get("parameters", "gpu_memory_utilization")
+        )
+    else:
+        gpu_memory_utilization = 0.9
 
     if engine == "hf":
         model_loader = model_loader.ModelLoader(
@@ -84,6 +103,8 @@ if __name__ == "__main__":
                 context_lengths=context_lengths,
                 max_context_length=max_context_length,
                 max_new_tokens=max_new_tokens,
+                chat_model=chat_model,
+                sys_prompt=sys_prompt,
             )
         elif engine == "vllm":
             pred_generator = answer_generator.vLLM_AnswerGenerator(
@@ -95,22 +116,12 @@ if __name__ == "__main__":
                 context_lengths=context_lengths,
                 max_context_length=max_context_length,
                 max_new_tokens=max_new_tokens,
+                chat_model=chat_model,
+                sys_prompt=sys_prompt,
             )
         else:
             raise Exception('Engine should be "hf" or "vllm"')
 
-        pred_generator = answer_generator.AnswerGenerator(
-            model=model,
-            tokenizer=tokenizer,
-            device=device,
-            dataset=dataset,
-            instruction=instruction,
-            context_lengths=context_lengths,
-            max_context_length=max_context_length,
-            max_new_tokens=max_new_tokens,
-            chat_model=chat_model,
-            sys_prompt=sys_prompt,
-        )
         generated_answers = pred_generator.generate_answers()
         results[dataset_name] = generated_answers
 
