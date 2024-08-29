@@ -124,13 +124,17 @@ class vLLM_AnswerGenerator(AnswerGenerator):
             tokenize=False,
         )
         sample["prompt"] = prompt
-        return inputs
+        return sample
 
     def generate_answers(self):
         self.dataset = self.dataset.filter(
             lambda x: x["length"] in self.context_lengths
         )
-        self.dataset = self.dataset.map(self.create_prompt)
+        if self.chat_model:
+            self.dataset = self.dataset.map(self.create_prompt_with_chat_template)
+        else:
+            self.dataset = self.dataset.map(self.create_prompt)
+
         out = self.model.generate(
             self.dataset["prompt"],
             sampling_params=SamplingParams(
