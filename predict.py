@@ -40,19 +40,21 @@ if __name__ == "__main__":
         sys_prompt = None
 
     if config.has_option("parameters", "engine"):
-        chat_model = bool(config.get("parameters", "engine"))
+        engine = bool(config.get("parameters", "engine"))
     else:
-        chat_model = "hf"
+        engine = "hf"
 
     if config.has_option("parameters", "tensor_parallel_size"):
-        chat_model = int(config.get("parameters", "tensor_parallel_size"))
+        tensor_parallel_size = int(config.get("parameters", "tensor_parallel_size"))
     else:
-        chat_model = "hf"
+        tensor_parallel_size = "hf"
 
     if config.has_option("parameters", "gpu_memory_utilization"):
-        chat_model = float(config.get("parameters", "gpu_memory_utilization"))
+        gpu_memory_utilization = float(
+            config.get("parameters", "gpu_memory_utilization")
+        )
     else:
-        chat_model = "hf"
+        gpu_memory_utilization = "hf"
 
     if engine == "hf":
         model_loader = model_loader.ModelLoader(
