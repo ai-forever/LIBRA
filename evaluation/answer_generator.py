@@ -31,13 +31,7 @@ class AnswerGenerator:
         prompt = self.instruction
         prompt = prompt.replace("{context}", sample["context"])
         prompt = prompt.replace("{input}", sample["input"])
-        inputs = self.tokenizer(
-            prompt,
-            truncation=True,
-            max_length=self.max_context_length,
-            return_tensors="pt",
-        ).to(self.device)
-        return inputs
+        return prompt
 
     def create_prompt_with_chat_template(self, sample):
         prompt = self.instruction
@@ -52,16 +46,14 @@ class AnswerGenerator:
                 }
             )
         messages.append({"role": "user", "content": prompt})
-        inputs = self.tokenizer.apply_chat_template(
+        prompt = self.tokenizer.apply_chat_template(
             messages,
-            tokenize=True,
+            tokenize=False,
             add_generation_prompt=True,
             truncation=True,
             max_length=self.max_context_length,
-            return_tensors="pt",
-            return_dict=True,
-        ).to(self.device)
-        return inputs
+        )
+        return prompt
 
     def generate_answers(self):
         generated_answers = []
@@ -71,19 +63,29 @@ class AnswerGenerator:
                 continue
 
             if self.chat_model:
-                inputs = self.create_prompt_with_chat_template(sample)
+                prompt = self.create_prompt_with_chat_template(sample)
             else:
-                inputs = self.create_prompt(sample)
+                prompt = self.create_prompt(sample)
+
+            inputs = self.tokenizer(
+                prompt,
+                truncation=True,
+                max_length=self.max_context_length,
+                return_tensors="pt",
+            ).to(self.device)
 
             generation_output = self.model.generate(
                 **inputs,
                 max_new_tokens=self.max_new_tokens,
                 num_beams=1,
                 do_sample=False,
-                temperature=1.0
+                eos_token_id=self.tokenizer.eos_token_id
             )
+
+            prompt_len = len(inputs["input_ids"][0])
+
             model_answer = self.tokenizer.decode(
-                generation_output[0][-self.max_new_tokens :].cpu()
+                generation_output[0][prompt_len:].cpu(), skip_special_tokens=True
             )
             generated_answer = {
                 "length": sample["length"],
