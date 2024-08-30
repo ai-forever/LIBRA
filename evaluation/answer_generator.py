@@ -63,7 +63,16 @@ class AnswerGenerator:
                 continue
 
             if self.chat_model:
-                prompt = self.create_prompt_with_chat_template(sample)
+                if (
+                    not hasattr(self.tokenizer, "chat_template")
+                    or not self.tokenizer.chat_template
+                ):
+                    print(
+                        "chat_model is set to True, but tokenizer doesn't have chat_template. Evaluating w/o template."
+                    )
+                    prompt = self.create_prompt(sample)
+                else:
+                    prompt = self.create_prompt_with_chat_template(sample)
             else:
                 prompt = self.create_prompt(sample)
 
