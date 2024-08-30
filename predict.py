@@ -8,7 +8,6 @@ from huggingface_hub import login
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--config", help="Enter config path", required=True)
     parser.add_argument("-t", "--token", help="Enter Hugging Face token")
@@ -30,7 +29,7 @@ if __name__ == "__main__":
     save_path = config.get("parameters", "save_path")
 
     if config.has_option("parameters", "chat_model"):
-        chat_model = bool(config.get("parameters", "chat_model"))
+        chat_model = config.get("parameters", "chat_model") == "True"
     else:
         chat_model = False
 
