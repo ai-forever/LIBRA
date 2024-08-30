@@ -74,4 +74,4 @@ if __name__ == "__main__":
         os.makedirs(save_path.split("/")[0])
     with open(save_path, "w") as outfile:
         json.dump(results, outfile)
-    print(f"evaluations were saved here: {save_path}.json")
+    print(f"evaluations were saved here: {save_path}")
