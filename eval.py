@@ -1,6 +1,6 @@
-import os
 import argparse
 import json
+from pathlib import Path
 import numpy as np
 
 from evaluation import metrics
@@ -69,9 +69,9 @@ if __name__ == "__main__":
     results["total_score"] = np.mean(total_score)
 
     print(results)
-    save_path = "results/" + args.path.split("/")[1]
-    if not os.path.exists(save_path.split("/")[0]):
-        os.makedirs(save_path.split("/")[0])
+    save_path = Path("./results") / Path(args.path).name
+    if not save_path.parent.exists():
+        save_path.parent.mkdir(parents=True)
     with open(save_path, "w") as outfile:
         json.dump(results, outfile)
     print(f"evaluations were saved here: {save_path}")
