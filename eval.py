@@ -3,7 +3,7 @@ import argparse
 import json
 import numpy as np
 
-from evaluation import dataset_loader, model_loader, answer_generator, metrics
+from evaluation import metrics
 
 
 def name_to_metric(name):
