@@ -73,5 +73,5 @@ if __name__ == "__main__":
     if not save_path.parent.exists():
         save_path.parent.mkdir(parents=True)
     with open(save_path, "w") as outfile:
-        json.dump(results, outfile)
+        json.dump(results, outfile, indent=4)
     print(f"evaluations were saved here: {save_path}")
