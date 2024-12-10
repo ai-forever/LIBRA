@@ -1,22 +1,20 @@
 import re
 import string
+import pymorphy2
 
 from collections import Counter
 
 
-def normalize_answer(s):
+normalizer = pymorphy2.MorphAnalyzer()
 
-    def white_space_fix(text):
-        return " ".join(text.split())
 
-    def remove_punc(text):
-        exclude = set(string.punctuation)
-        return "".join(ch for ch in text if ch not in exclude)
-
-    def lower(text):
-        return text.lower()
-
-    return white_space_fix(remove_punc(lower(s)))
+def normalize_answer(sentence):
+    new_sentence = []
+    for word in sentence.split():
+        token = re.sub(r'[^a-zа-яй0-9_]+', '', word.lower())
+        token = normalizer.parse(token)[0].normal_form.lower()
+        new_sentence.append(token)
+    return " ".join(new_sentence)
 
 
 def count_score(prediction, ground_truth):
@@ -51,6 +49,6 @@ def qa_f1_score(prediction, ground_truth):
 
 def exact_match_score(prediction, ground_truth):
     result = 0.0
-    if ground_truth in prediction:
+    if normalize_answer(ground_truth) in normalize_answer(prediction):
         result = 1.0
     return result
