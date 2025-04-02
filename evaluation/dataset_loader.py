@@ -6,5 +6,5 @@ class DatasetLoader:
         self.dataset_name = dataset_name
 
     def dataset_load(self):
-        dataset = load_dataset("ai-forever/LIBRA", self.dataset_name)["test"]
+        dataset = load_dataset("ai-forever/LIBRA-v2", self.dataset_name)["test"]
         return dataset
