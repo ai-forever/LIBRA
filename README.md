@@ -17,7 +17,6 @@
   </picture>
 </p>
 
-> **What's new:** We have released an updated version of LIBRA with cleaned and extended datasets. As part of this update, we introduce **LIBRA Mini** — a compact subset of 6 most challenging and diagnostically informative tasks, which we recommend as the primary evaluation suite for model comparisons. Full details are available on the [LIBRA dataset card](https://huggingface.co/datasets/ai-forever/LIBRA).
  
 ## Introduction
 
