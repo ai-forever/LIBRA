@@ -1,11 +1,5 @@
 # LIBRA: Long Input Benchmark for Russian Analysis
 
-<p align="center">
-  <picture>
-    <img alt="LIBRA" src="docs/LIBRA_logo.png" style="max-width: 90%;">
-  </picture>
-</p>
-
 > [!WARNING]
 > ## ⚠️ This repository is no longer maintained
 >
@@ -16,6 +10,13 @@
 > **How to run evaluations:** We have migrated to [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) as the primary evaluation framework. We recommend using it with LIBRA and LIBRA Mini instead of the codebase in this repository.
 >
 > For questions, please contact: m_tikhonova94@mail.ru
+
+<p align="center">
+  <picture>
+    <img alt="LIBRA" src="docs/LIBRA_logo.png" style="max-width: 70%;">
+  </picture>
+</p>
+
  
 ## Introduction
 
