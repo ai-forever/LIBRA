@@ -2,9 +2,20 @@
 
 <p align="center">
   <picture>
-    <img alt="LIBRA" src="docs/LIBRA_logo.png" style="max-width: 100%;">
+    <img alt="LIBRA" src="docs/LIBRA_logo.png" style="max-width: 90%;">
   </picture>
 </p>
+
+> [!WARNING]
+> ## ⚠️ This repository is no longer maintained
+>
+> As of **May 2026**, this codebase is considered legacy and is no longer actively supported. It corresponds to the original version of LIBRA, which is archived as [LIBRA_old](https://huggingface.co/datasets/ai-forever/LIBRA_old) on Hugging Face. No new issues or pull requests will be reviewed.
+>
+> **What's new:** We have released an updated version of LIBRA with cleaned and extended datasets. As part of this update, we introduce **LIBRA Mini** — a compact subset of 6 most challenging and diagnostically informative tasks, which we recommend as the primary evaluation suite for model comparisons. Full details are available on the [LIBRA dataset card](https://huggingface.co/datasets/ai-forever/LIBRA).
+>
+> **How to run evaluations:** We have migrated to [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) as the primary evaluation framework. We recommend using it with LIBRA and LIBRA Mini instead of the codebase in this repository.
+>
+> For questions, please contact: m_tikhonova94@mail.ru
  
 ## Introduction
 
