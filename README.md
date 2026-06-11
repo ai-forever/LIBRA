@@ -7,7 +7,7 @@
 >
 > **What's new:** We have released an updated version of LIBRA with cleaned and extended datasets. As part of this update, we introduce **LIBRA Mini** — a compact subset of 6 most challenging and diagnostically informative tasks, which we recommend as the primary evaluation suite for model comparisons. Full details are available on the [LIBRA dataset card](https://huggingface.co/datasets/ai-forever/LIBRA).
 >
-> **How to run evaluations:** We have migrated to [lm-evaluation-harness]([https://github.com/EleutherAI/lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness/pull/3751)
+> **How to run evaluations:** We have migrated to [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness/pull/3751)
  as the primary evaluation framework. We recommend using it with LIBRA and LIBRA Mini instead of the codebase in this repository.
 >
 > For questions, please contact: m_tikhonova94@mail.ru
